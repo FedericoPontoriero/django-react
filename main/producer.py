@@ -1,5 +1,5 @@
-from flask import json
-import pika
+#!/usr/bin/env python3
+import pika, json
 
 params = pika.URLParameters("rabbitmqurl")
 
@@ -11,5 +11,5 @@ channel = connection.channel()
 def publish(method, body):
     properties = pika.BasicProperties(method)
     channel.basic_publish(
-        exchange="", routing_key="main", properties=properties, body=json.dumps(body)
+        exchange="", routing_key="admin", body=json.dumps(body), properties=properties
     )
