@@ -130,3 +130,4 @@ dmypy.json
 
 /admin/.dbdata/
 /main/.dbdata/
+/react-crud/node_modules
