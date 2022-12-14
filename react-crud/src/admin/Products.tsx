@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Product } from "../interfaces/product";
 import Wrapper from "./Wrapper";
 
@@ -13,9 +14,26 @@ const Products = () => {
         })();
     }, []);
 
+    const onDelete = async (id: number) => {
+        if (window.confirm("Are you sure you want to delete this product?")) {
+            await fetch(`http://localhost:8000/api/products/${id}`, {
+                method: "DELETE",
+            });
+            setProducts(products.filter((p: Product) => p.id !== id));
+        }
+    };
+
     return (
         <Wrapper>
             <div className="table-responsive">
+                <div className="btn-toolbar mb-2 mb-md-0">
+                    <Link
+                        to="/admin/products/create"
+                        className="btn btn-sm btn-outline-secondary"
+                    >
+                        Add
+                    </Link>
+                </div>
                 <table className="table table-striped table-sm">
                     <thead>
                         <tr>
@@ -35,7 +53,23 @@ const Products = () => {
                                     </td>
                                     <td scope="col">{p.title}</td>
                                     <td scope="col">{p.likes}</td>
-                                    <td scope="col"></td>
+                                    <td scope="col">
+                                        <div className="btn-group mr-2">
+                                            <a
+                                                href="#"
+                                                className="btn btn-sm btn-outline-secondary"
+                                                onClick={() => onDelete(p.id)}
+                                            >
+                                                Delete
+                                            </a>
+                                            <Link
+                                                className="btn btn-sm btn-outline-secondary"
+                                                to={`/admin/products/${p.id}/edit`}
+                                            >
+                                                Edit
+                                            </Link>
+                                        </div>
+                                    </td>
                                 </tr>
                             );
                         })}
